@@ -18,21 +18,17 @@
  uniform mat4 M;
  uniform mat3 MV3x3;
  uniform vec3 LightPosition_worldspace;
+ uniform vec3  LightColor = vec3(1,1,1);
+ uniform float LightPower = 2.0f;
 
 
 void main(){
-    
-    	// Light emission properties
-   	// You probably want to put them as uniforms
-	   vec3 LightColor = vec3(1,1,1);
-	   float LightPower = 2.0;
 	
 	// Material properties
-	vec3 MaterialDiffuseColor = texture( DiffuseTextureSampler, UV ).rgb;
-	vec3 MaterialAmbientColor = vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
-	vec3 MaterialSpecularColor = texture( SpecularTextureSampler, UV ).rgb * 0.3;
+	vec3 MaterialDiffuseColor =  texture( DiffuseTextureSampler, UV ).rgb;
+	vec3 MaterialAmbientColor =  vec3(0.1,0.1,0.1) * MaterialDiffuseColor;
+	vec3 MaterialSpecularColor = texture( SpecularTextureSampler, UV ).rgb  * 2;
 
-	// Local normal, in tangent space. V tex coordinate is inverted because normal map is in TGA (not in DDS) for better quality
 	vec3 TextureNormal_tangentspace = normalize(texture( NormalTextureSampler, UV).rgb*2.0 - 1.0);
 	
 	// Distance to the light
@@ -61,8 +57,8 @@ void main(){
 	float cosAlpha = clamp( dot( E,R ), 0,1 );
 	
 	color = MaterialAmbientColor 
-	      + MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance) ;
-	      //+ MaterialSpecularColor * LightColor * LightPower * pow(cosAlpha,5) / (distance*distance);
+	      + MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance)
+	      + MaterialSpecularColor *LightColor * LightPower * pow(cosAlpha,40)/ (distance*distance);
 }
 
 

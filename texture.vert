@@ -1,4 +1,4 @@
-#version 130 
+#version 130
 
 // Input vertex data, different for all executions of this shader.
 attribute vec3 VertexPosition;
@@ -27,7 +27,7 @@ void main(){
 
     gl_Position =  MVP * vec4(VertexPosition,1);
 
-    UV = 3*VertexTexCoord;
+    UV = vec2(4,3) * VertexTexCoord;
 
 
 	 Position_worldspace = (M * vec4(VertexPosition,1)).xyz;
