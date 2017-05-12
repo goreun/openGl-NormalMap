@@ -215,12 +215,9 @@ glewExperimental = GL_TRUE;
         render(); 
         break;
       case ConfigureNotify:
-        //glMatrixMode(GL_PROJECTION);
+
         resize(event.xconfigure.width, event.xconfigure.height);
-        //glViewport(0, 0, event.xconfigure.width, event.xconfigure.height);
-        //glLoadIdentity();
-        //glOrtho(-1.5,1.5,-1.5,1.5,0.0,1.5);
-        //glMatrixMode(GL_MODELVIEW);
+
 if (doubleBuffer) glXSwapBuffers(display,main_window); else glFlush();
   glBindVertexArray(0);
          fprintf(stderr, "In ConfigureNotify\n");

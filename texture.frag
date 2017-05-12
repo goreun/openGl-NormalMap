@@ -59,6 +59,7 @@ void main(){
 	color = MaterialAmbientColor 
 	      + MaterialDiffuseColor * LightColor * LightPower * cosTheta / (distance*distance)
 	      + MaterialSpecularColor *LightColor * LightPower * pow(cosAlpha,40)/ (distance*distance);
+	      color=vec3(1.0,0.0,0.0);
 }
 
 

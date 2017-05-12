@@ -78,7 +78,7 @@ void init()
 	 makeIndices();
 	 int number = makeSphere(1.5,0.0,0.0,0.0);
 	 bindBuffers();
-
+ model = mat4(1.0f);
     // Load texture file
     loadTexture();
 
@@ -144,7 +144,7 @@ void render()
     glUniform3f(getUniLoc(prog, "LightColor" ), 1.0f, 1.0f, 1.0f);
     glUniform1f(getUniLoc(prog, "LightPower" ), 2.0f);
 
-    model = mat4(1.0f);
+    model *=  glm::rotate(3.0f,vec3(0.0f,1.0f,0.0f));
     setMatrices();
     drawSphere();
 }

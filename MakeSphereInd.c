@@ -6,7 +6,6 @@
 #include <GL/glew.h>
 #include <GL/gl.h>
 
-
 const int M = 20; //M = Number of vertices around one row
 const int N = 20;//Number of rows including poles. Each pole and its row is M+1
 const int numberVerts = 2*(M+1) + M*(N-3); //382 = 2*21 + 17*20
@@ -16,6 +15,8 @@ float Vertices[N-2][3*(M+1)]; //Each vertex is 3 floats
 
 float Tangents[N-2][3*(M+1)];
 float BiTangents[N-2][3*(M+1)];
+
+float renderNormals[N-2][6*(M+1)];
 
 float UVs[N-2][2*(M+1)];  //Each vertex has 2 uvs
 int numberVertices = 0;
@@ -167,6 +168,13 @@ if ( (r <= 0.0) || (M <= 1) || (N <= 1)){
        BiTangents[0][count]    = - sin(phi) * cos(theta);
        BiTangents[0][count + 1]= cos(phi);
        BiTangents[0][count + 2]= -sin(phi) * sin(theta);
+
+	renderNormals[0][count/3*6]  = Vertices[0][count];
+	renderNormals[0][count/3*6+1]= Vertices[0][count] + Tangents[0][count] ; 
+	renderNormals[0][count/3*6+2]= Vertices[0][count+1];
+	renderNormals[0][count/3*6+3]= Vertices[0][count+1] + Tangents[0][count+1] ; 
+	renderNormals[0][count/3*6+4]= Vertices[0][count+2];
+	renderNormals[0][count/3*6+5]= Vertices[0][count+2] + Tangents[0][count+2] ; 
     
       count +=3;
       uvCounter += 2;
@@ -196,8 +204,8 @@ if ( (r <= 0.0) || (M <= 1) || (N <= 1)){
         Vertices[i][count+1] = centery + r * y;
         Vertices[i][count+2] = centerz + r * z;
         Normals[i][count] = x;
-        Normals[i][count+1] = y;
         Normals[i][count +2] = z;
+        Normals[i][count+1] = y;
 
 		  UVs[i][uvCounter]   = (float)j/((float)M-1);
     	  UVs[i][uvCounter+1] = ((float)i+1)/(float)N; //first raw in UV's 
@@ -207,11 +215,35 @@ if ( (r <= 0.0) || (M <= 1) || (N <= 1)){
         Tangents[i][count]    = -cos(phi) * sin(theta);
         Tangents[i][count + 1]=  0;
         Tangents[i][count + 2]= cos(phi) * cos(theta);
+
+			float absTangent = sqrtf(Tangents[i][count]*Tangents[i][count]+Tangents[i][count+1]*Tangents[i][count+1]+Tangents[i][count+2]*Tangents[i][count+2])  ;      
+        
+        Tangents[i][count]/=absTangent;
+        Tangents[i][count + 1]=  0;
+        Tangents[i][count + 2]/= absTangent;
     
         BiTangents[i][count]    = - sin(phi) * cos(theta);
-        BiTangents[i][count + 1]= cos(phi);
-        BiTangents[i][count + 2]= - sin(phi) * sin(theta);   
-    		
+        BiTangents[i][count + 1]=   cos(phi);
+        BiTangents[i][count + 2]= - sin(phi) * sin(theta); 
+        			
+       float absBiTangent = sqrtf(BiTangents[i][count]*BiTangents[i][count]+BiTangents[i][count+1]*BiTangents[i][count+1]+BiTangents[i][count+2]*BiTangents[i][count+2])  ;      
+
+        BiTangents[i][count]    /= absBiTangent;
+        BiTangents[i][count + 1]/=absBiTangent;
+        BiTangents[i][count + 2]/=absBiTangent; 
+                
+        /*Normals[i][count] = 	 BiTangents[i][count+1]*Tangents[i][count + 2] - Tangents[i][count + 1] *BiTangents[i][count + 2] ;
+        Normals[i][count +1] = BiTangents[i][count+2]*Tangents[i][count] - Tangents[i][count + 2] *BiTangents[i][count] ;
+        Normals[i][count+ 2] = BiTangents[i][count]*Tangents[i][count + 1] - Tangents[i][count ] *BiTangents[i][count + 1] ;*/
+
+	renderNormals[i][count/3*6]  = Vertices[i][count];
+	renderNormals[i][count/3*6+1]=  Vertices[i][count+1];
+	renderNormals[i][count/3*6+2]= Vertices[i][count+2];
+	renderNormals[i][count/3*6+3]= Vertices[i][count]   + 0.3f*BiTangents[i][count] ;
+	renderNormals[i][count/3*6+4]= Vertices[i][count+1] + 0.3f*BiTangents[i][count+1] ; 
+	renderNormals[i][count/3*6+5]= Vertices[i][count+2] + 0.3f*BiTangents[i][count+2] ;  
+	
+
         
         count += 3;
         uvCounter += 2;
@@ -279,6 +311,14 @@ if ( (r <= 0.0) || (M <= 1) || (N <= 1)){
         BiTangents[N-3][count]    = - sin(phi) * cos(theta);
         BiTangents[N-3][count + 1]=   cos(phi);
         BiTangents[N-3][count + 2]= - sin(phi) * sin(theta);   
+
+	renderNormals[N-3][count/3*6]  = Vertices[N-3][count];
+	renderNormals[N-3][count/3*6+1]= Vertices[N-3][count]   + Tangents[N-3][count] ; 
+	renderNormals[N-3][count/3*6+2]= Vertices[N-3][count+1];
+	renderNormals[N-3][count/3*6+3]= Vertices[N-3][count+1] + Tangents[N-3][count+1] ; 
+	renderNormals[N-3][count/3*6+4]= Vertices[N-3][count+2];
+	renderNormals[N-3][count/3*6+5]= Vertices[N-3][count+2] + Tangents[N-3][count+2] ;  
+    		
     		
     
       count +=3;
@@ -349,14 +389,26 @@ void bindBuffers(){
 
 void drawSphere(){
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
- glBindVertexArray(vaoHandleS);
+ /*glBindVertexArray(vaoHandleS);
 
  glDrawElements(GL_TRIANGLE_FAN, 21, GL_UNSIGNED_INT, (GLvoid*)((char*)NULL));
 
-  for (int i = 1; i < 18; i++)
+  for (int i = 1; i < 18; i++){
      glDrawElements(GL_TRIANGLE_STRIP, 42, GL_UNSIGNED_INT,(GLvoid *)((char *)NULL + (i*168)));
-
+}
   glDrawElements(GL_TRIANGLE_FAN, 21, GL_UNSIGNED_INT, (GLvoid*)((char*)NULL+(18*168)));
+  
+  */
+  
+  glBegin(GL_LINES);
+  glColor3f(1,0.0,0.0);
+  for(int i = 2; i<17 ; i++){
+  	for(int j=0; j < 6*(M+1); j+=6){
+  	 glVertex3f(renderNormals[i][j],renderNormals[i][j+1],renderNormals[i][j+2]);
+  	 glVertex3f(renderNormals[i][j+3],renderNormals[i][j+4],renderNormals[i][j+5]);
+   }
+  }
+  glEnd();
 }
 
 
