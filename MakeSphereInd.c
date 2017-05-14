@@ -18,7 +18,7 @@ float BiTangents[N-2][3*(M+1)];
 
 float renderNormals[N-2][6*(M+1)];
 
-float UVs[N-2][2*(M+1)];  //Each vertex has 2 uvs
+float UVs[N-2][2*(M+1)];  
 int numberVertices = 0;
 int total = 0;
 GLsizei size;
@@ -387,9 +387,9 @@ void bindBuffers(){
     
 }
 
-void drawSphere(){
+void drawObject(){
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
- /*glBindVertexArray(vaoHandleS);
+ glBindVertexArray(vaoHandleS);
 
  glDrawElements(GL_TRIANGLE_FAN, 21, GL_UNSIGNED_INT, (GLvoid*)((char*)NULL));
 
@@ -398,9 +398,9 @@ void drawSphere(){
 }
   glDrawElements(GL_TRIANGLE_FAN, 21, GL_UNSIGNED_INT, (GLvoid*)((char*)NULL+(18*168)));
   
-  */
   
-  glBegin(GL_LINES);
+  
+ /* glBegin(GL_LINES);
   glColor3f(1,0.0,0.0);
   for(int i = 2; i<17 ; i++){
   	for(int j=0; j < 6*(M+1); j+=6){
@@ -408,7 +408,7 @@ void drawSphere(){
   	 glVertex3f(renderNormals[i][j+3],renderNormals[i][j+4],renderNormals[i][j+5]);
    }
   }
-  glEnd();
+  glEnd();*/
 }
 
 

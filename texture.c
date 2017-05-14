@@ -20,8 +20,9 @@ using glm::mat4;
 extern int installShaders();
 extern int  makeIndices();
 extern int  makeSphere(float, float, float, float);
+//extern int  makeTorus();
 extern void bindBuffers();
-extern void drawSphere();
+extern void drawObject();
 extern GLint getUniLoc(GLuint, const char *);
 extern GLuint prog;
 GLuint tex_2d;   //the texture handle
@@ -77,6 +78,7 @@ void init()
     angle = 0.0;
 	 makeIndices();
 	 int number = makeSphere(1.5,0.0,0.0,0.0);
+         //int number = makeTorus();
 	 bindBuffers();
  model = mat4(1.0f);
     // Load texture file
@@ -140,13 +142,13 @@ void render()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glUniform3f(getUniLoc(prog, "LightPosition"), 2.0f,1.0f,-1.0f );
+    glUniform3f(getUniLoc(prog, "LightPosition"), -1.0f,1.0f,-1.0f );
     glUniform3f(getUniLoc(prog, "LightColor" ), 1.0f, 1.0f, 1.0f);
     glUniform1f(getUniLoc(prog, "LightPower" ), 2.0f);
 
     model *=  glm::rotate(3.0f,vec3(0.0f,1.0f,0.0f));
     setMatrices();
-    drawSphere();
+    drawObject();
 }
 
 

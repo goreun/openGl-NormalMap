@@ -1,7 +1,7 @@
 EXE = normal_mapping
-OBJS =  texture.o shader.o main.o makeCube.o image_DXT.o image_helper.o  stb_image_aug.o  SOIL.o MakeSphereInd.o
+OBJS =  texture.o shader.o main.o makeCube.o image_DXT.o image_helper.o  stb_image_aug.o  SOIL.o    MakeSphereInd.o #MakeTorusInd.o
 
-FILES = defines.h stb_image_aug.h stbi_DDS_aug_c.h image_helper.h stbi_DDS_aug.h image_DXT.h glutils.h shader.h SOIL.h cube.h texture.h texture.c image_helper.c image_DXT.c stb_image_aug.c MakeSphereInd.c shader.c makeCube.c main.c 
+FILES = defines.h stb_image_aug.h stbi_DDS_aug_c.h image_helper.h stbi_DDS_aug.h image_DXT.h glutils.h shader.h SOIL.h cube.h texture.h texture.c image_helper.c image_DXT.c stb_image_aug.c  shader.c makeCube.c main.c MakeSphereInd.c #MakeTorusInd.c 
 
 INCLUDES = /usr/X11R6/include -I /usr/include 
 LIB = /usr/X11R6/lib

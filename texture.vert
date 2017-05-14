@@ -27,7 +27,8 @@ void main(){
 
     gl_Position =  MVP * vec4(VertexPosition,1);
 
-    UV = vec2(4,3) * VertexTexCoord;
+      UV = vec2(4,3) * VertexTexCoord; 
+      //UV = vec2(8,2) * VertexTexCoord; 
 
 
 	 Position_worldspace = (M * vec4(VertexPosition,1)).xyz;
